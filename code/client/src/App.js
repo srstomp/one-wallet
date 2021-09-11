@@ -1,3 +1,4 @@
+import React from 'react'
 import styled, { ThemeProvider } from 'styled-components'
 import { BrowserRouter } from 'react-router-dom'
 import GlobalStyle from './styles/globalStyles'
@@ -11,19 +12,20 @@ const Content = styled.div`
     width: 100%;
     height: 100%;
 `
-
-const App = () => {
-    return (
-        <ThemeProvider theme={theme}>
-            <GlobalStyle/>
-            <BrowserRouter>
-                <Background/>
-                <Content>
-                    <AuthenticatedApp/>
-                </Content>
-            </BrowserRouter>
-        </ThemeProvider>
-    )
-}
+/*
+        <ConnectedRouter history={history}>
+            <Routes/>
+        </ConnectedRouter>
+ */
+const App = () =>
+  <ThemeProvider theme={theme}>
+    <GlobalStyle />
+    <BrowserRouter>
+      <Background />
+      <Content>
+        <AuthenticatedApp />
+      </Content>
+    </BrowserRouter>
+  </ThemeProvider>
 
 export default App
