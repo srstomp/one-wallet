@@ -9214,6 +9214,11 @@ rc-virtual-list@^3.0.1, rc-virtual-list@^3.2.0:
     rc-resize-observer "^1.0.0"
     rc-util "^5.0.7"
 
+react-auth-code-input@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/react-auth-code-input/-/react-auth-code-input-1.2.1.tgz#6042207d2f9688aa06d48594889e5f70675a44be"
+  integrity sha512-+S5yBwi/lv/2/jolaryx1veHXDIomeIL/YOx1HVpqIWFlFz2eXWFNN8aA3RniJmp+YzVc5G04gQlFLpXT8Km+w==
+
 react-dom@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"
