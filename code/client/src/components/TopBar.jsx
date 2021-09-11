@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Icon from '../assets/svg/icon.svg'
 import Munqs from '../assets/svg/munqs.svg'
-import HarmonyIcon from '../assets/harmony-icon.svg'
+
 
 const Container = styled.div`
     display: flex;
@@ -22,7 +22,7 @@ const Menu = styled.div`
 const TopBar = () => {
   return (
     <Container>
-      <Icon style={{ marginRight: '12px' }} />
+      {/*<Icon style={{ marginRight: '12px' }} />*/}
       <Munqs />
       <Menu>
         <span>Create</span>
