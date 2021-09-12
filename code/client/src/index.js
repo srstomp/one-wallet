@@ -1,4 +1,3 @@
-import './app.less'
 import './init'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -11,6 +10,7 @@ import { Integrations } from '@sentry/tracing'
 import { initAPI, initBlockchain } from './api'
 import config from './config'
 import App from './App'
+import './i18n'
 
 if (!config.debug) {
   Sentry.init({

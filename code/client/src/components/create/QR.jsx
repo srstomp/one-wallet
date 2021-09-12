@@ -4,7 +4,8 @@ import qrcode from 'qrcode'
 // import ONEUtil from '../../../lib/util'
 // import ONEConstants from '../../../lib/constants'
 import ONENames from '../../../../lib/names'
-import { useWindowDimensions, useMounted } from '../../utils/hooks'
+import { useMounted } from '../../utils/hooks'
+import { useWindowDimensions } from "../../util";
 
 const generateOtpSeed = () => {
   const otpSeedBuffer = new Uint8Array(20)
