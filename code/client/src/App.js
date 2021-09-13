@@ -12,11 +12,7 @@ const Content = styled.div`
     width: 100%;
     height: 100%;
 `
-/*
-        <ConnectedRouter history={history}>
-            <Routes/>
-        </ConnectedRouter>
- */
+
 const App = () =>
   <ThemeProvider theme={theme}>
     <GlobalStyle />

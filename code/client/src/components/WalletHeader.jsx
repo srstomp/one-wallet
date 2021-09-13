@@ -1,16 +1,12 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react'
-// import styled from 'styled-components'
 import { PageHeader, Select, Divider, Modal, Input, Typography, Space, Button } from 'antd'
 import { useRouteMatch, useHistory } from 'react-router'
-import { titleCase } from 'title-case'
 import { useSelector, useDispatch } from 'react-redux'
 import walletActions from '../state/modules/wallet/actions'
 import { SearchOutlined, LockOutlined, CloseOutlined, SettingOutlined } from '@ant-design/icons'
 import config from '../config'
 import util, { useWindowDimensions } from '../util'
 import { Hint } from '../components/Text'
-// import Paths from '../constants/paths'
 const { Text, Link } = Typography
 
 // const SelectorLabel = styled.span`

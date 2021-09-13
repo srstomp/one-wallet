@@ -66,7 +66,7 @@ const Create = () => {
           <Panel ref={panel}>
             <QR />
           </Panel>
-          <Link onClick={() => toggle()}>{t('enter_code_link')}</Link>
+          {/*<Link onClick={() => toggle()}>{t('enter_code_link')}</Link>
           <Modal
             toggler={show => <Link onClick={show}>{t('enter_code_link')}</Link>}
             content={hide =>
@@ -77,7 +77,7 @@ const Create = () => {
                 </CodeWrapper>
               </Alert>}
             container={document.body}
-          />
+          />*/}
         </Column>
         <Column>
           <Title1>{t('create_title')}</Title1>
