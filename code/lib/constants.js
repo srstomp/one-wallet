@@ -59,7 +59,7 @@ module.exports = {
   EmptyAddress: '0x0000000000000000000000000000000000000000',
   EmptyBech32Address: 'one1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqquzw7vz',
   TreasuryAddress: '0x02F2cF45DD4bAcbA091D78502Dba3B2F431a54D3',
-  MajorVersion: 10,
+  MajorVersion: 11,
   MinorVersion: 1,
   Domain: {
     DEFAULT_RENT_DURATION: 31536000, // 365 * 24 * 3600,
@@ -79,5 +79,5 @@ module.exports = {
     ROUTER: '0x1b02da8cb0d097eb8d57a175b88c7d8b47997506',
     FACTORY: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
     WONE: '0xcF664087a5bB0237a0BAd6742852ec6c8d69A27a',
-  }
+  },
 }
