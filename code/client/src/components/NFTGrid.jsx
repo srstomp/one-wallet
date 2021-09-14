@@ -6,7 +6,7 @@ import { AverageRow, TallRow } from './Grid'
 import { api } from '../../../lib/api'
 import util, { useWindowDimensions } from '../util'
 import { Warning, Heading } from './Text'
-import { withKeys } from './TokenAssets'
+import { NFTMetadataTransformer, withKeys } from './TokenAssets'
 import { useDispatch, useSelector } from 'react-redux'
 import ONEConstants from '../../../lib/constants'
 import { FallbackImage } from '../constants/ui'
@@ -14,10 +14,10 @@ import styled from 'styled-components'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import Paths from '../constants/paths'
 import { useHistory } from 'react-router'
+import ReactPlayer from 'react-player'
 const { Text, Title } = Typography
 
 const GridItem = styled(Card.Grid)`
-  
   &:hover{
     opacity: ${props => props['data-full-view'] ? 1.0 : 0.5};
   }
@@ -31,6 +31,7 @@ const NFTGridItem = ({ disabled, style, styleFullView, imageWrapperStyle, imageW
   const [fullView, setFullView] = useState(false)
   const bech32ContractAddress = util.safeOneAddress(contractAddress)
   const abbrBech32ContractAddress = util.ellipsisAddress(bech32ContractAddress)
+  const [imageType, setImageType] = useState()
 
   uri = util.replaceIPFSLink(uri)
   // console.log({ uri })
@@ -39,9 +40,15 @@ const NFTGridItem = ({ disabled, style, styleFullView, imageWrapperStyle, imageW
     const f = async function () {
       try {
         const metadata = await api.web.get({ link: uri })
-        setMetadata(metadata)
+        const transformed = NFTMetadataTransformer({ contractAddress, metadata })
+        if (transformed.image && (transformed.image.length - transformed.image.lastIndexOf('.')) > 5) {
+          const { 'content-type': contentType } = await api.web.head({ link: util.replaceIPFSLink(transformed.image) })
+          setImageType(contentType)
+        }
+        setMetadata(transformed)
       } catch (ex) {
         const identifier = name && symbol ? `${name} (${symbol}) (${uri})` : `${uri}`
+        console.error(ex)
         message.error(`Unable to retrieve data for token ${identifier}`)
       }
     }
@@ -68,18 +75,22 @@ const NFTGridItem = ({ disabled, style, styleFullView, imageWrapperStyle, imageW
 
   const interactable = !disabled && util.isNonZeroBalance(balance)
 
+  const imageStyle = { objectFit: 'cover', width: '100%', height: isMobile ? undefined : '100%' }
+
   // console.log(util.replaceIPFSLink(metadata?.image))
   return (
     <GridItem style={fullView ? styleFullView : style} hoverable={false} onClick={() => !fullView && interactable && setFullView(true)} data-full-view={fullView}>
       {!fullView &&
-        <Row style={{ height: wrapperStyle.height || 'auto' }}>
-          <Image
-            preview={false}
-            src={util.replaceIPFSLink(metadata?.image) || FallbackImage}
-            fallback={FallbackImage}
-            wrapperStyle={wrapperStyle}
-            style={{ objectFit: 'cover', width: '100%', height: isMobile ? undefined : '100%' }}
-          />
+        <Row style={{ height: wrapperStyle.height || 'auto' }} justify='center'>
+          {imageType?.startsWith('video')
+            ? <ReactPlayer url={util.replaceIPFSLink(metadata?.image)} style={imageStyle} width={imageStyle.width} height={imageStyle.height || 'auto'} playing muted />
+            : <Image
+                preview={false}
+                src={util.replaceIPFSLink(metadata?.image) || FallbackImage}
+                fallback={FallbackImage}
+                wrapperStyle={wrapperStyle}
+                style={imageStyle}
+              />}
         </Row>}
       {!fullView &&
         <Row justify='space-between' style={{ padding: 8 }}>
@@ -99,17 +110,13 @@ const NFTGridItem = ({ disabled, style, styleFullView, imageWrapperStyle, imageW
             prevArrow={<SlickButtonFix><LeftOutlined /></SlickButtonFix>}
             nextArrow={<SlickButtonFix><RightOutlined /></SlickButtonFix>}
           >
-            <Image
-              onClick={() => setFullView(false)}
-              preview={false} src={util.replaceIPFSLink(metadata?.image)} fallback={FallbackImage}
-              wrapperStyle={wrapperStyle} style={{ objectFit: 'contain', width: '100%', height: '100%' }}
-            />
-            {animationUrl &&
-              <Image
-                onClick={() => setFullView(false)}
-                preview={false} src={util.replaceIPFSLink(animationUrl)} fallback={FallbackImage}
-                wrapperStyle={wrapperStyle} style={{ objectFit: 'contain', width: '100%', height: '100%' }}
-              />}
+            {imageType?.startsWith('video')
+              ? <ReactPlayer url={util.replaceIPFSLink(metadata?.image)} style={imageStyle} playing controls width={imageStyle.width} height={imageStyle.height || 'auto'} />
+              : <Image
+                  onClick={() => setFullView(false)}
+                  preview={false} src={animationUrl ? util.replaceIPFSLink(animationUrl) : util.replaceIPFSLink(metadata?.image)} fallback={FallbackImage}
+                  wrapperStyle={wrapperStyle} style={{ objectFit: 'contain', width: '100%', height: '100%' }}
+                />}
           </Carousel>
         </Row>}
       {fullView && metadata &&
@@ -123,7 +130,7 @@ const NFTGridItem = ({ disabled, style, styleFullView, imageWrapperStyle, imageW
             <Text>{metadata.description}</Text>
             <AverageRow>
               <Space size='large'>
-                {metadata.image && <Button type='link' href={util.replaceIPFSLink(metadata.image)} target='_blank' style={{ padding: 0 }}>Download Image</Button>}
+                {metadata.image && <Button type='link' href={util.replaceIPFSLink(metadata.image)} target='_blank' style={{ padding: 0 }}>Download Asset</Button>}
                 {metadata.animation_url && <Button type='link' href={util.replaceIPFSLink(animationUrl)} target='_blank' style={{ padding: 0 }}>Download Animation</Button>}
               </Space>
             </AverageRow>
@@ -161,6 +168,10 @@ const NFTGridItem = ({ disabled, style, styleFullView, imageWrapperStyle, imageW
             <AverageRow align='middle'>
               <Col span={isMobile ? 24 : 12}> <Title level={3}>Creator</Title></Col>
               <Col> <Text>{metadata?.properties?.artist}</Text> </Col>
+            </AverageRow>}
+          {imageType?.startsWith('video') &&
+            <AverageRow justify='end'>
+              <Button type='link' size='large' onClick={() => setFullView(false)}>Minimize</Button>
             </AverageRow>}
         </div>}
     </GridItem>

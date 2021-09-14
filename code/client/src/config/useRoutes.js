@@ -1,11 +1,19 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
-import { Create } from '../pages/index'
+import { Welcome } from '../pages/index'
 
 const useRoutes = () => {
   const routes = [
     {
       path: '/',
+      exact: true,
+      menuItem: true,
+      title: '',
+      component: Welcome,
+      icon: null
+    },
+    {
+      path: '/create',
       exact: true,
       menuItem: true,
       title: '',
